@@ -211,6 +211,7 @@ INSTALLED_APPS = [
     "django_otp.plugins.otp_totp",
     "two_factor",
     "two_factor.plugins.phonenumber",
+    "django_sso.sso_service",
 ]
 if USING_PGROONGA:
     INSTALLED_APPS += ["pgroonga"]
@@ -1223,3 +1224,15 @@ SCIM_SERVICE_PROVIDER = {
         },
     ],
 }
+
+# Django variable. URL for unlogged users. We redirect it to our view.
+LOGIN_URL = '/'
+
+# Specify SSO server base url
+SSO_ROOT = 'http://localhost:8000/'
+
+# Specify application token obtained in SSO server in the admin panel
+SSO_TOKEN = '957irlLr1aW002JCjHTA7gVocuFYxM0YmKATtlqXNiszbSkWX2yKq8Gc0vJdBQCX3uMOTyG5dTv6N9VNBfLxqRoipQH7rcBJSFhICmLDiY8hckoftlkRKTuKkuLiRl6I'
+
+# Overriding event acceptor class (OPTIONAL). For more details read "Overriding event acceptor in subordinated service" partition
+# SSO_EVENT_ACCEPTOR_CLASS = 'project.my_overrides.MySSOEventAcceptor'

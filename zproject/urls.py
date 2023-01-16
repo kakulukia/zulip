@@ -604,6 +604,7 @@ i18n_urls = [
     path("reactivate/<confirmation_key>", realm_reactivation, name="realm_reactivation"),
     # Login/registration
     path("register/", accounts_home, name="register"),
+    path('', include('django_sso.sso_service.urls')),
     path("login/", login_page, {"template_name": "zerver/login.html"}, name="login_page"),
     path("join/<confirmation_key>/", accounts_home_from_multiuse_invite, name="join"),
     # Used to generate a Zoom video call URL
