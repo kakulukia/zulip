@@ -55,6 +55,8 @@ export function maybe_disable_widgets() {
         .find("input, textarea, button, select")
         .prop("disabled", true);
 
+    $(".organization-box [data-name='organization-profile']").find(".image_upload_button").hide();
+
     $(".organization-box [data-name='organization-settings']")
         .find("input, textarea, button, select")
         .prop("disabled", true);
@@ -426,7 +428,7 @@ function set_org_join_restrictions_dropdown() {
     );
 }
 
-function set_message_content_in_email_notifications_visiblity() {
+function set_message_content_in_email_notifications_visibility() {
     change_element_block_display_property(
         "message_content_in_email_notifications_label",
         page_params.realm_message_content_allowed_in_email_notifications,
@@ -522,7 +524,7 @@ function update_dependent_subsettings(property_name) {
             set_org_join_restrictions_dropdown();
             break;
         case "realm_message_content_allowed_in_email_notifications":
-            set_message_content_in_email_notifications_visiblity();
+            set_message_content_in_email_notifications_visibility();
             break;
         case "realm_digest_emails_enabled":
             settings_notifications.set_enable_digest_emails_visibility(
@@ -543,6 +545,41 @@ export let default_code_language_widget = null;
 export let notifications_stream_widget = null;
 export let signup_notifications_stream_widget = null;
 
+export function get_widget_for_dropdown_list_settings(property_name) {
+    switch (property_name) {
+        case "realm_notifications_stream_id":
+            return notifications_stream_widget;
+        case "realm_signup_notifications_stream_id":
+            return signup_notifications_stream_widget;
+        case "realm_default_code_block_language":
+            return default_code_language_widget;
+        default:
+            blueslip.error("No dropdown list widget for property: " + property_name);
+            return null;
+    }
+}
+
+export function set_dropdown_list_widget_setting_value(property_name, value) {
+    const widget = get_widget_for_dropdown_list_settings(property_name);
+    widget.render(value);
+}
+
+export function get_dropdown_list_widget_setting_value($input_elem, for_api_data = true) {
+    const widget_name = extract_property_name($input_elem);
+    const setting_widget = get_widget_for_dropdown_list_settings(widget_name);
+
+    const setting_value_type = $input_elem.attr("data-setting-value-type");
+    if (setting_value_type === "number") {
+        return Number.parseInt(setting_widget.value(), 10);
+    }
+
+    const setting_value = setting_widget.value();
+    if (setting_value.length === 0 && !for_api_data) {
+        return null;
+    }
+    return setting_value;
+}
+
 export function discard_property_element_changes(elem, for_realm_default_settings, sub) {
     const $elem = $(elem);
     const property_name = extract_property_name($elem, for_realm_default_settings);
@@ -553,13 +590,9 @@ export function discard_property_element_changes(elem, for_realm_default_setting
             populate_auth_methods(property_value);
             break;
         case "realm_notifications_stream_id":
-            notifications_stream_widget.render(property_value);
-            break;
         case "realm_signup_notifications_stream_id":
-            signup_notifications_stream_widget.render(property_value);
-            break;
         case "realm_default_code_block_language":
-            default_code_language_widget.render(property_value);
+            set_dropdown_list_widget_setting_value(property_name, property_value);
             break;
         case "realm_default_language":
             $("#org-notifications .language_selection_widget .language_selection_button span").attr(
@@ -615,19 +648,6 @@ export function discard_property_element_changes(elem, for_realm_default_setting
 export function sync_realm_settings(property) {
     if (!meta.loaded) {
         return;
-    }
-
-    const value = page_params[`realm_${property}`];
-    switch (property) {
-        case "notifications_stream_id":
-            notifications_stream_widget.render(value);
-            break;
-        case "signup_notifications_stream_id":
-            signup_notifications_stream_widget.render(value);
-            break;
-        case "default_code_block_language":
-            default_code_language_widget.render(value);
-            break;
     }
 
     switch (property) {
@@ -759,6 +779,8 @@ export function get_input_element_value(input_elem, input_type) {
             return get_time_limit_setting_value($input_elem);
         case "message-retention-setting":
             return get_message_retention_setting_value($input_elem);
+        case "dropdown-list-widget":
+            return get_dropdown_list_widget_setting_value($input_elem);
         default:
             return undefined;
     }
@@ -841,16 +863,9 @@ export function check_property_changed(elem, for_realm_default_settings, sub) {
             proposed_val = JSON.stringify(proposed_val);
             break;
         case "realm_notifications_stream_id":
-            proposed_val = Number.parseInt(notifications_stream_widget.value(), 10);
-            break;
         case "realm_signup_notifications_stream_id":
-            proposed_val = Number.parseInt(signup_notifications_stream_widget.value(), 10);
-            break;
         case "realm_default_code_block_language":
-            proposed_val = default_code_language_widget.value();
-            if (proposed_val.length === 0) {
-                proposed_val = null;
-            }
+            proposed_val = get_dropdown_list_widget_setting_value($elem, false);
             break;
         case "email_notifications_batching_period_seconds":
             proposed_val = get_time_limit_setting_value($elem, false);
@@ -1048,24 +1063,10 @@ export function register_save_discard_widget_handlers(
 
         switch (subsection) {
             case "notifications":
-                data.notifications_stream_id = Number.parseInt(
-                    notifications_stream_widget.value(),
-                    10,
-                );
-                data.signup_notifications_stream_id = Number.parseInt(
-                    signup_notifications_stream_widget.value(),
-                    10,
-                );
                 data.default_language = $(
                     "#org-notifications .language_selection_widget .language_selection_button span",
                 ).attr("data-language-code");
                 break;
-            case "other_settings": {
-                const code_block_language_value = default_code_language_widget.value();
-                // No need to JSON-encode, since this value is already a string.
-                data.default_code_block_language = code_block_language_value;
-                break;
-            }
             case "join_settings": {
                 const org_join_restrictions = $("#id_realm_org_join_restrictions").val();
                 switch (org_join_restrictions) {
@@ -1156,7 +1157,7 @@ export function build_page() {
     set_delete_own_message_policy_dropdown(page_params.realm_delete_own_message_policy);
     set_message_retention_setting_dropdown();
     set_org_join_restrictions_dropdown();
-    set_message_content_in_email_notifications_visiblity();
+    set_message_content_in_email_notifications_visibility();
     set_digest_emails_weekday_visibility();
     set_create_web_public_stream_dropdown_visibility();
 

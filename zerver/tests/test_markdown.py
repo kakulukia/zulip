@@ -2027,7 +2027,7 @@ class MarkdownTest(ZulipTestCase):
         rendering_result = render_markdown(msg, content)
         self.assertEqual(
             rendering_result.rendered_content,
-            '<p><span class="user-mention" data-user-id="*">' "@all" "</span> test</p>",
+            '<p><span class="user-mention" data-user-id="*">@all</span> test</p>',
         )
         self.assertTrue(rendering_result.mentions_wildcard)
 
@@ -2039,7 +2039,7 @@ class MarkdownTest(ZulipTestCase):
         rendering_result = render_markdown(msg, content)
         self.assertEqual(
             rendering_result.rendered_content,
-            '<p><span class="user-mention" data-user-id="*">' "@everyone" "</span> test</p>",
+            '<p><span class="user-mention" data-user-id="*">@everyone</span> test</p>',
         )
         self.assertTrue(rendering_result.mentions_wildcard)
 
@@ -2051,7 +2051,7 @@ class MarkdownTest(ZulipTestCase):
         rendering_result = render_markdown(msg, content)
         self.assertEqual(
             rendering_result.rendered_content,
-            '<p><span class="user-mention" data-user-id="*">' "@stream" "</span> test</p>",
+            '<p><span class="user-mention" data-user-id="*">@stream</span> test</p>',
         )
         self.assertTrue(rendering_result.mentions_wildcard)
 
@@ -2105,7 +2105,7 @@ class MarkdownTest(ZulipTestCase):
         rendering_result = render_markdown(msg, content)
         self.assertEqual(
             rendering_result.rendered_content,
-            '<p><span class="user-mention" ' f'data-user-id="{user_id}">' "@King Hamlet</span></p>",
+            f'<p><span class="user-mention" data-user-id="{user_id}">@King Hamlet</span></p>',
         )
         self.assertEqual(rendering_result.mentions_user_ids, {user_profile.id})
 
@@ -2113,7 +2113,7 @@ class MarkdownTest(ZulipTestCase):
         rendering_result = render_markdown(msg, content)
         self.assertEqual(
             rendering_result.rendered_content,
-            '<p><span class="user-mention" ' f'data-user-id="{user_id}">' "@King Hamlet</span></p>",
+            f'<p><span class="user-mention" data-user-id="{user_id}">@King Hamlet</span></p>',
         )
         self.assertEqual(rendering_result.mentions_user_ids, {user_profile.id})
 
@@ -2894,13 +2894,15 @@ class MarkdownTest(ZulipTestCase):
     def test_disabled_code_block_processor(self) -> None:
         msg = (
             "Hello,\n\n"
-            + "    I am writing this message to test something. I am writing this message to test something."
+            "    I am writing this message to test something. I am writing this message to test"
+            " something."
         )
         converted = markdown_convert_wrapper(msg)
         expected_output = (
             "<p>Hello,</p>\n"
-            + '<div class="codehilite"><pre><span></span><code>I am writing this message to test something. I am writing this message to test something.\n'
-            + "</code></pre></div>"
+            '<div class="codehilite"><pre><span></span><code>I am writing this message to test'
+            " something. I am writing this message to test something.\n"
+            "</code></pre></div>"
         )
         self.assertEqual(converted, expected_output)
 
@@ -2911,7 +2913,8 @@ class MarkdownTest(ZulipTestCase):
         rendering_result = markdown_convert(msg, message_realm=realm, email_gateway=True)
         expected_output = (
             "<p>Hello,</p>\n"
-            + "<p>I am writing this message to test something. I am writing this message to test something.</p>"
+            "<p>I am writing this message to test something. I am writing this message to test"
+            " something.</p>"
         )
         self.assertEqual(rendering_result.rendered_content, expected_output)
 

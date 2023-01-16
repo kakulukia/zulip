@@ -1348,9 +1348,10 @@ class InviteUserTest(InviteUserBase):
         result = self.invite(invitee_emails, ["Denmark"])
         self.assert_json_error(
             result,
-            "Some of those addresses are already using Zulip,"
-            + " so we didn't send them an invitation."
-            + " We did send invitations to everyone else!",
+            (
+                "Some of those addresses are already using Zulip, so we didn't send them an"
+                " invitation. We did send invitations to everyone else!"
+            ),
         )
 
     def test_invite_mirror_dummy_user(self) -> None:
@@ -1501,7 +1502,7 @@ class InviteUserTest(InviteUserBase):
         self.login("iago")
         invitee = self.nonreg_email("alice")
         response = self.invite(invitee, ["Denmark"], invite_as=10)
-        self.assert_json_error(response, "Must be invited as an valid type of user")
+        self.assert_json_error(response, "Invalid invite_as")
 
     def test_successful_invite_user_as_guest_from_normal_account(self) -> None:
         self.login("hamlet")
@@ -3219,6 +3220,17 @@ class MultiuseInviteTest(ZulipTestCase):
             },
         )
         self.assert_json_error(result, "Invalid stream ID 54321. No invites were sent.")
+
+    def test_create_multiuse_link_invalid_invite_as_api_call(self) -> None:
+        self.login("iago")
+        result = self.client_post(
+            "/json/invites/multiuse",
+            {
+                "invite_as": orjson.dumps(PreregistrationUser.INVITE_AS["GUEST_USER"] + 1).decode(),
+                "invite_expires_in_minutes": 2 * 24 * 60,
+            },
+        )
+        self.assert_json_error(result, "Invalid invite_as")
 
 
 class EmailUnsubscribeTests(ZulipTestCase):

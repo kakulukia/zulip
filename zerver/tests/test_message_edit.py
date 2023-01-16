@@ -712,11 +712,11 @@ class EditMessageTest(EditMessageTestCase):
         # Check content of message after edit.
         self.assertEqual(
             message_history_1[0]["rendered_content"],
-            "<p>Here is a link to " '<a href="http://www.zulip.org">zulip</a>.</p>',
+            '<p>Here is a link to <a href="http://www.zulip.org">zulip</a>.</p>',
         )
         self.assertEqual(
             message_history_1[1]["rendered_content"],
-            "<p>Here is a link to " '<a href="http://www.zulipchat.com">zulip</a>.</p>',
+            '<p>Here is a link to <a href="http://www.zulipchat.com">zulip</a>.</p>',
         )
         self.assertEqual(
             message_history_1[1]["content_html_diff"],
@@ -1412,7 +1412,7 @@ class EditMessageTest(EditMessageTestCase):
         set_topic_mutes(desdemona, muted_topics)
         set_topic_mutes(cordelia, muted_topics)
 
-        with self.assert_database_query_count(31):
+        with self.assert_database_query_count(30):
             check_update_message(
                 user_profile=desdemona,
                 message_id=message_id,
@@ -1443,7 +1443,7 @@ class EditMessageTest(EditMessageTestCase):
         set_topic_mutes(desdemona, muted_topics)
         set_topic_mutes(cordelia, muted_topics)
 
-        with self.assert_database_query_count(33):
+        with self.assert_database_query_count(32):
             check_update_message(
                 user_profile=desdemona,
                 message_id=message_id,
@@ -1476,7 +1476,7 @@ class EditMessageTest(EditMessageTestCase):
         set_topic_mutes(desdemona, muted_topics)
         set_topic_mutes(cordelia, muted_topics)
 
-        with self.assert_database_query_count(31):
+        with self.assert_database_query_count(30):
             check_update_message(
                 user_profile=desdemona,
                 message_id=message_id,
@@ -1499,7 +1499,7 @@ class EditMessageTest(EditMessageTestCase):
         second_message_id = self.send_stream_message(
             hamlet, stream_name, topic_name="changed topic name", content="Second message"
         )
-        with self.assert_database_query_count(25):
+        with self.assert_database_query_count(24):
             check_update_message(
                 user_profile=desdemona,
                 message_id=second_message_id,
@@ -1683,11 +1683,11 @@ class EditMessageTest(EditMessageTestCase):
         msg3 = Message.objects.get(id=id3)
 
         msg1_edit_history = orjson.loads(assert_is_not_none(msg1.edit_history))
-        self.assertTrue("prev_content" in msg1_edit_history[0].keys())
+        self.assertTrue("prev_content" in msg1_edit_history[0])
 
         for msg in [msg2, msg3]:
             self.assertFalse(
-                "prev_content" in orjson.loads(assert_is_not_none(msg.edit_history))[0].keys()
+                "prev_content" in orjson.loads(assert_is_not_none(msg.edit_history))[0]
             )
 
         for msg in [msg1, msg2, msg3]:

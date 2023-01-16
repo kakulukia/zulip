@@ -86,7 +86,7 @@ from zerver.lib.test_helpers import (
     use_s3_backend,
 )
 from zerver.lib.types import Validator
-from zerver.lib.upload import DEFAULT_AVATAR_SIZE, MEDIUM_AVATAR_SIZE, resize_avatar
+from zerver.lib.upload.base import DEFAULT_AVATAR_SIZE, MEDIUM_AVATAR_SIZE, resize_avatar
 from zerver.lib.users import get_all_api_keys
 from zerver.lib.utils import assert_is_not_none
 from zerver.lib.validator import (
@@ -243,7 +243,7 @@ class AuthBackendTest(ZulipTestCase):
         clear_supported_auth_backends_cache()
 
         # Verify auth fails if the auth backend is disabled for the realm
-        for backend_name in AUTH_BACKEND_NAME_MAP.keys():
+        for backend_name in AUTH_BACKEND_NAME_MAP:
             if isinstance(backend, AUTH_BACKEND_NAME_MAP[backend_name]):
                 break
 
@@ -2000,15 +2000,15 @@ class SAMLAuthBackendTest(SocialAuthBase):
         extra_attrs = ""
         for extra_attr_name, extra_attr_values in extra_attributes.items():
             values = "".join(
-                '<saml2:AttributeValue xmlns:xs="http://www.w3.org/2001/XMLSchema" '
-                + 'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xs:string">'
-                + f"{value}</saml2:AttributeValue>"
+                '<saml2:AttributeValue xmlns:xs="http://www.w3.org/2001/XMLSchema"'
+                ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xs:string">'
+                f"{value}</saml2:AttributeValue>"
                 for value in extra_attr_values
             )
             extra_attrs += (
-                f'<saml2:Attribute Name="{extra_attr_name}" '
-                + 'NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified">'
-                + f"{values}</saml2:Attribute>"
+                f'<saml2:Attribute Name="{extra_attr_name}"'
+                ' NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified">'
+                f"{values}</saml2:Attribute>"
             )
 
         unencoded_saml_response = self.fixture_data("samlresponse.txt", type="saml").format(
@@ -2815,8 +2815,11 @@ class SAMLAuthBackendTest(SocialAuthBase):
                 m.output,
                 [
                     self.logger_output(
-                        "AuthFailed: Authentication failed: SAML user from IdP test_idp rejected due to "
-                        + "missing entitlement for subdomain ''. User entitlements: ['zephyr'].",
+                        (
+                            "AuthFailed: Authentication failed: SAML user from IdP test_idp"
+                            " rejected due to missing entitlement for subdomain ''. User"
+                            " entitlements: ['zephyr']."
+                        ),
                         "info",
                     )
                 ],
@@ -2839,8 +2842,11 @@ class SAMLAuthBackendTest(SocialAuthBase):
             m.output,
             [
                 self.logger_output(
-                    "AuthFailed: Authentication failed: SAML user from IdP test_idp rejected due to "
-                    + "missing entitlement for subdomain 'zulip'. User entitlements: ['zephyr', 'othersubdomain'].",
+                    (
+                        "AuthFailed: Authentication failed: SAML user from IdP test_idp rejected"
+                        " due to missing entitlement for subdomain 'zulip'. User entitlements:"
+                        " ['zephyr', 'othersubdomain']."
+                    ),
                     "info",
                 )
             ],
@@ -2934,8 +2940,10 @@ class SAMLAuthBackendTest(SocialAuthBase):
             m.output,
             [
                 self.logger_output(
-                    "Exception while syncing custom profile fields for "
-                    + f"user {self.user_profile.id}: Custom profile field with name title not found.",
+                    (
+                        "Exception while syncing custom profile fields for user"
+                        f" {self.user_profile.id}: Custom profile field with name title not found."
+                    ),
                     "warning",
                 )
             ],
@@ -3303,14 +3311,12 @@ class AppleAuthBackendNativeFlowTest(AppleAuthMixin, SocialAuthBase):
         The desktop app doesn't use the native flow currently and the desktop app flow in its
         current form happens in the browser, thus only the web flow is viable there.
         """
-        pass
 
     def test_social_auth_no_key(self) -> None:
         """
         The basic validation of server configuration is handled on the
         /login/social/apple/ endpoint which isn't even a part of the native flow.
         """
-        pass
 
 
 class GenericOpenIdConnectTest(SocialAuthBase):

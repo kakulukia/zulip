@@ -127,8 +127,6 @@ class InterruptConsumeError(Exception):
     of the current event and normally continue the work of the queue.
     """
 
-    pass
-
 
 class WorkerDeclarationError(Exception):
     pass
@@ -667,7 +665,7 @@ class MissedMessageWorker(QueueProcessingWorker):
                     else:
                         events_by_recipient[event.user_profile_id] = [entry]
 
-                for user_profile_id in events_by_recipient.keys():
+                for user_profile_id in events_by_recipient:
                     events: List[Dict[str, Any]] = events_by_recipient[user_profile_id]
 
                     logging.info(

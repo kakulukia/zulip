@@ -30,9 +30,10 @@ import * as user_profile from "./user_profile";
 import {user_settings} from "./user_settings";
 
 let password_quality; // Loaded asynchronously
+let user_avatar_widget_created = false;
 
 export function update_email(new_email) {
-    const $email_input = $("#change_email");
+    const $email_input = $("#change_email_button");
 
     if ($email_input) {
         $email_input.text(new_email);
@@ -60,31 +61,12 @@ export function update_name_change_display() {
 }
 
 export function update_email_change_display() {
-    if (page_params.realm_email_changes_disabled && !page_params.is_admin) {
-        $("#change_email").prop("disabled", true);
-        $(".change_email_tooltip").show();
+    if (!settings_data.user_can_change_email()) {
+        $("#change_email_button").prop("disabled", true);
+        $("#change_email_button_container").addClass("email_changes_disabled_tooltip");
     } else {
-        $("#change_email").prop("disabled", false);
-        $(".change_email_tooltip").hide();
-    }
-}
-
-export function update_avatar_change_display() {
-    if (!settings_data.user_can_change_avatar()) {
-        // We disable this widget by simply hiding its edit UI.
-        $("#user-avatar-upload-widget .image_upload_button").hide();
-        $(".user-avatar-section .settings-info-icon").show();
-    } else {
-        $("#user-avatar-upload-widget .image_upload_button").show();
-        $(".user-avatar-section .settings-info-icon").hide();
-    }
-}
-
-export function update_send_read_receipts_tooltip() {
-    if (page_params.realm_enable_read_receipts) {
-        $("#send_read_receipts_label .settings-info-icon").hide();
-    } else {
-        $("#send_read_receipts_label .settings-info-icon").show();
+        $("#change_email_button").prop("disabled", false);
+        $("#change_email_button_container").removeClass("email_changes_disabled_tooltip");
     }
 }
 
@@ -99,6 +81,83 @@ function display_avatar_upload_started() {
     $("#user-avatar-upload-widget .upload-spinner-background").css({visibility: "visible"});
     $("#user-avatar-upload-widget .image-upload-text").hide();
     $("#user-avatar-upload-widget .image-delete-button").hide();
+}
+
+function upload_avatar($file_input) {
+    const form_data = new FormData();
+
+    form_data.append("csrfmiddlewaretoken", csrf_token);
+    for (const [i, file] of Array.prototype.entries.call($file_input[0].files)) {
+        form_data.append("file-" + i, file);
+    }
+    display_avatar_upload_started();
+    channel.post({
+        url: "/json/users/me/avatar",
+        data: form_data,
+        cache: false,
+        processData: false,
+        contentType: false,
+        success() {
+            display_avatar_upload_complete();
+            $("#user-avatar-upload-widget .image_file_input_error").hide();
+            $("#user-avatar-source").hide();
+            // Rest of the work is done via the user_events -> avatar_url event we will get
+        },
+        error(xhr) {
+            display_avatar_upload_complete();
+            if (page_params.avatar_source === "G") {
+                $("#user-avatar-source").show();
+            }
+            const $error = $("#user-avatar-upload-widget .image_file_input_error");
+            $error.text(JSON.parse(xhr.responseText).msg);
+            $error.show();
+        },
+    });
+}
+
+export function update_avatar_change_display() {
+    if (!settings_data.user_can_change_avatar()) {
+        $("#user-avatar-upload-widget .image_upload_button").addClass("hide");
+        $("#user-avatar-upload-widget .image-disabled").removeClass("hide");
+    } else {
+        if (user_avatar_widget_created === false) {
+            avatar.build_user_avatar_widget(upload_avatar);
+            user_avatar_widget_created = true;
+        }
+        $("#user-avatar-upload-widget .image_upload_button").removeClass("hide");
+        $("#user-avatar-upload-widget .image-disabled").addClass("hide");
+    }
+}
+
+export function update_account_settings_display() {
+    update_name_change_display();
+    update_email_change_display();
+    update_avatar_change_display();
+}
+
+export function maybe_update_deactivate_account_button() {
+    if (!page_params.is_owner) {
+        return;
+    }
+
+    const $deactivate_account_container = $("#deactivate_account_container");
+    if ($deactivate_account_container) {
+        if (people.is_current_user_only_owner()) {
+            $("#user_deactivate_account_button").prop("disabled", true);
+            $deactivate_account_container.addClass("only_organization_owner_tooltip");
+        } else {
+            $("#user_deactivate_account_button").prop("disabled", false);
+            $deactivate_account_container.removeClass("only_organization_owner_tooltip");
+        }
+    }
+}
+
+export function update_send_read_receipts_tooltip() {
+    if (page_params.realm_enable_read_receipts) {
+        $("#send_read_receipts_label .settings-info-icon").hide();
+    } else {
+        $("#send_read_receipts_label .settings-info-icon").show();
+    }
 }
 
 function settings_change_error(message_html, xhr) {
@@ -606,7 +665,7 @@ export function set_up() {
         e.stopPropagation();
         const $change_email_error = $("#change_email_modal").find("#dialog_error");
         const data = {};
-        data.email = $("#change_email_container").find("input[name='email']").val();
+        data.email = $("#change_email_form").find("input[name='email']").val();
 
         const opts = {
             success_continuation() {
@@ -640,26 +699,26 @@ export function set_up() {
     }
 
     function change_email_post_render() {
-        const $input_elem = $("#change_email_container").find("input[name='email']");
-        const email = $("#change_email").text().trim();
+        const $input_elem = $("#change_email_form").find("input[name='email']");
+        const email = $("#change_email_button").text().trim();
         $input_elem.val(email);
     }
 
-    $("#change_email").on("click", (e) => {
+    $("#change_email_button").on("click", (e) => {
         e.preventDefault();
         e.stopPropagation();
-        if (!page_params.realm_email_changes_disabled || page_params.is_admin) {
+        if (settings_data.user_can_change_email()) {
             dialog_widget.launch({
                 html_heading: $t_html({defaultMessage: "Change email"}),
                 html_body: render_change_email_modal(),
                 html_submit_button: $t_html({defaultMessage: "Change"}),
                 loading_spinner: true,
                 id: "change_email_modal",
-                form_id: "change_email_container",
+                form_id: "change_email_form",
                 on_click: do_change_email,
                 post_render: change_email_post_render,
                 on_shown() {
-                    $("#change_email_container input").trigger("focus");
+                    $("#change_email_form input").trigger("focus");
                 },
             });
         }
@@ -754,39 +813,15 @@ export function set_up() {
         user_profile.show_user_profile(user);
     });
 
-    function upload_avatar($file_input) {
-        const form_data = new FormData();
+    // When the personal settings overlay is opened, we reset
+    // the tracking variable for live update behavior of the
+    // user avatar upload widget and handlers.
+    user_avatar_widget_created = false;
 
-        form_data.append("csrfmiddlewaretoken", csrf_token);
-        for (const [i, file] of Array.prototype.entries.call($file_input[0].files)) {
-            form_data.append("file-" + i, file);
-        }
-        display_avatar_upload_started();
-        channel.post({
-            url: "/json/users/me/avatar",
-            data: form_data,
-            cache: false,
-            processData: false,
-            contentType: false,
-            success() {
-                display_avatar_upload_complete();
-                $("#user-avatar-upload-widget .image_file_input_error").hide();
-                $("#user-avatar-source").hide();
-                // Rest of the work is done via the user_events -> avatar_url event we will get
-            },
-            error(xhr) {
-                display_avatar_upload_complete();
-                if (page_params.avatar_source === "G") {
-                    $("#user-avatar-source").show();
-                }
-                const $error = $("#user-avatar-upload-widget .image_file_input_error");
-                $error.text(JSON.parse(xhr.responseText).msg);
-                $error.show();
-            },
-        });
+    if (settings_data.user_can_change_avatar()) {
+        avatar.build_user_avatar_widget(upload_avatar);
+        user_avatar_widget_created = true;
     }
-
-    avatar.build_user_avatar_widget(upload_avatar);
 
     $("#user_timezone").val(user_settings.timezone);
 

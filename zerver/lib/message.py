@@ -570,10 +570,9 @@ class MessageDict:
         if rendered_content is not None:
             obj["rendered_content"] = rendered_content
         else:
-            obj["rendered_content"] = (
-                "<p>[Zulip note: Sorry, we could not "
-                + "understand the formatting of your message]</p>"
-            )
+            obj[
+                "rendered_content"
+            ] = "<p>[Zulip note: Sorry, we could not understand the formatting of your message]</p>"
 
         if rendered_content is not None:
             obj["is_me_message"] = Message.is_status_message(content, rendered_content)
@@ -827,7 +826,7 @@ def has_message_access(
     else:
         assert stream.recipient_id == message.recipient_id
 
-    if stream.realm != user_profile.realm:
+    if stream.realm_id != user_profile.realm_id:
         # You can't access public stream messages in other realms
         return False
 
@@ -1627,7 +1626,7 @@ def parse_message_content_edit_or_delete_limit(
     *,
     setting_name: str,
 ) -> Optional[int]:
-    if isinstance(value, str) and value in special_values_map.keys():
+    if isinstance(value, str) and value in special_values_map:
         return special_values_map[value]
     if isinstance(value, str) or value <= 0:
         raise RequestVariableConversionError(setting_name, value)

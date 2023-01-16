@@ -6880,12 +6880,13 @@ paths:
             permission for a bot by contacting [Zulip Cloud support][support]
             with an explanation for why it is needed. Self-hosted installations
             can toggle `can_create_users` on an account using the `manage.py
-            change_user_role` command.
+            change_user_role` [management command][management-commands].
 
         **Changes**: Before Zulip 4.0 (feature level 36), this endpoint was
         available to all organization administrators.
 
         [support]: /help/contact-support
+        [management-commands]: https://zulip.readthedocs.io/en/latest/production/management-commands.html
       x-requires-administrator: true
       parameters:
         - name: email
@@ -10013,7 +10014,7 @@ paths:
                       zulip_merge_base:
                         type: string
                         description: |
-                          The `git merge-base` between `zulip_verson` and official branches
+                          The `git merge-base` between `zulip_version` and official branches
                           in the public
                           [Zulip server and web app repository](https://github.com/zulip/zulip),
                           in the same format as `zulip_version`. This will equal
@@ -13409,7 +13410,7 @@ paths:
                       zulip_merge_base:
                         type: string
                         description: |
-                          The `git merge-base` between `zulip_verson` and official branches
+                          The `git merge-base` between `zulip_version` and official branches
                           in the public
                           [Zulip server and web app repository](https://github.com/zulip/zulip),
                           in the same format as `zulip_version`. This will equal
@@ -15622,8 +15623,7 @@ components:
             avatar_url: {}
             owner_id:
               nullable: true
-            services:
-              items: {} # https://github.com/p1c2u/openapi-core/issues/380
+            services: {}
     BasicBotBase:
       type: object
       properties:
@@ -15730,8 +15730,7 @@ components:
             avatar_url: {}
             owner_id:
               nullable: true
-            services:
-              items: {} # https://github.com/p1c2u/openapi-core/issues/380
+            services: {}
             email:
               type: string
               description: |

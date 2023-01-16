@@ -49,7 +49,7 @@ from zerver.lib.initial_password import initial_password
 from zerver.lib.rate_limiter import is_local_addr
 from zerver.lib.request import (
     REQ,
-    RequestConfusingParmsError,
+    RequestConfusingParamsError,
     RequestNotes,
     RequestVariableConversionError,
     RequestVariableMissingError,
@@ -183,7 +183,7 @@ class DecoratorTestCase(ZulipTestCase):
         self.assertEqual(orjson.loads(double(request).content).get("number"), 10)
 
         request = HostRequestMock(post_data={"number": "6", "x": "7"})
-        with self.assertRaises(RequestConfusingParmsError) as cm:
+        with self.assertRaises(RequestConfusingParamsError) as cm:
             double(request)
         self.assertEqual(str(cm.exception), "Can't decide between 'number' and 'x' arguments")
 
@@ -1971,8 +1971,8 @@ class ReturnSuccessOnHeadRequestDecorator(ZulipTestCase):
             return json_response(msg="from_test_function")  # nocoverage. isn't meant to be called
 
         response = test_function(request)
-        self.assert_json_success(response)
-        self.assertNotEqual(orjson.loads(response.content).get("msg"), "from_test_function")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.content, b"")
 
     def test_returns_normal_response_if_request_method_is_not_head(self) -> None:
         class HeadRequest(HostRequestMock):

@@ -849,8 +849,8 @@ class InlineInterestingLinkProcessor(markdown.treeprocessors.Treeprocessor):
         schema_re = r"(?:https?://)"
         host_re = r"(?:youtu\.be/|(?:\w+\.)?youtube(?:-nocookie)?\.com/)"
         param_re = (
-            r"(?:(?:(?:v|embed)/)|"
-            + r"(?:(?:(?:watch|playlist)(?:_popup|_videos)?(?:\.php)?)?(?:\?|#!?)(?:.+&)?v(?:ideo_ids)?=))"
+            r"(?:(?:(?:v|embed)/)"
+            r"|(?:(?:(?:watch|playlist)(?:_popup|_videos)?(?:\.php)?)?(?:\?|#!?)(?:.+&)?v(?:ideo_ids)?=))"
         )
         id_re = r"([0-9A-Za-z_-]+)"
         youtube_re = r"^({schema_re}?{host_re}{param_re}?)?{id_re}(?(1).+)?$"
@@ -883,8 +883,8 @@ class InlineInterestingLinkProcessor(markdown.treeprocessors.Treeprocessor):
 
         vimeo_re = (
             r"^((http|https)?:\/\/(www\.)?vimeo.com\/"
-            + r"(?:channels\/(?:\w+\/)?|groups\/"
-            + r"([^\/]*)\/videos\/|)(\d+)(?:|\/\?))$"
+            r"(?:channels\/(?:\w+\/)?|groups\/"
+            r"([^\/]*)\/videos\/|)(\d+)(?:|\/\?))$"
         )
         match = re.match(vimeo_re, url)
         if match is None:
@@ -1385,7 +1385,9 @@ class Timestamp(markdown.inlinepatterns.Pattern):
             timestamp = dateutil.parser.parse(time_input_string, tzinfos=common_timezones)
         except ValueError:
             try:
-                timestamp = datetime.datetime.fromtimestamp(float(time_input_string))
+                timestamp = datetime.datetime.fromtimestamp(
+                    float(time_input_string), tz=datetime.timezone.utc
+                )
             except ValueError:
                 pass
 
@@ -1692,7 +1694,7 @@ class BlockQuoteProcessor(markdown.blockprocessors.BlockQuoteProcessor):
     """
 
     # Original regex for blockquote is RE = re.compile(r'(^|\n)[ ]{0,3}>[ ]?(.*)')
-    RE = re.compile(r"(^|\n)(?!(?:[ ]{0,3}>\s*(?:$|\n))*(?:$|\n))" r"[ ]{0,3}>[ ]?(.*)")
+    RE = re.compile(r"(^|\n)(?!(?:[ ]{0,3}>\s*(?:$|\n))*(?:$|\n))[ ]{0,3}>[ ]?(.*)")
 
     # run() is very slightly forked from the base class; see notes below.
     def run(self, parent: Element, blocks: List[str]) -> None:
@@ -2491,8 +2493,6 @@ def topic_links(linkifiers_key: int, topic_name: str) -> List[Dict[str, str]]:
 
 
 def maybe_update_markdown_engines(linkifiers_key: int, email_gateway: bool) -> None:
-    global linkifier_data
-
     linkifiers = linkifiers_for_realm(linkifiers_key)
     if linkifiers_key not in linkifier_data or linkifier_data[linkifiers_key] != linkifiers:
         # Linkifier data has changed, update `linkifier_data` and any
@@ -2676,7 +2676,6 @@ def markdown_stats_start() -> None:
 def markdown_stats_finish() -> None:
     global markdown_total_time
     global markdown_total_requests
-    global markdown_time_start
     markdown_total_requests += 1
     markdown_total_time += time.time() - markdown_time_start
 

@@ -256,10 +256,12 @@ export class MessageListView {
         if (last_edit_timestamp !== undefined) {
             const last_edit_time = new Date(last_edit_timestamp * 1000);
             const today = new Date();
-            return (
-                timerender.render_date(last_edit_time, undefined, today)[0].textContent +
-                " at " +
-                timerender.stringify_time(last_edit_time)
+            return $t(
+                {defaultMessage: "{date} at {time}"},
+                {
+                    date: timerender.render_date(last_edit_time, undefined, today)[0].textContent,
+                    time: timerender.stringify_time(last_edit_time),
+                },
             );
         }
         return undefined;
@@ -424,9 +426,6 @@ export class MessageListView {
         let prev;
 
         const add_message_container_to_group = (message_container) => {
-            if (same_sender(prev, message_container)) {
-                prev.next_is_same_sender = true;
-            }
             current_group.message_containers.push(message_container);
         };
 
@@ -436,7 +435,6 @@ export class MessageListView {
                     current_group,
                     current_group.message_containers[0],
                 );
-                current_group.message_containers.at(-1).include_footer = true;
                 new_message_groups.push(current_group);
             }
         };
@@ -445,7 +443,6 @@ export class MessageListView {
             const message_reactions = reactions.get_message_reactions(message_container.msg);
             message_container.msg.message_reactions = message_reactions;
             message_container.include_recipient = false;
-            message_container.include_footer = false;
 
             if (
                 same_recipient(prev, message_container) &&
@@ -530,16 +527,13 @@ export class MessageListView {
             ) {
                 first_msg_container.include_sender = false;
             }
-            if (same_sender(last_msg_container, first_msg_container)) {
-                last_msg_container.next_is_same_sender = true;
-            }
             first_group.message_containers = first_group.message_containers.concat(
                 second_group.message_containers,
             );
             return true;
         }
 
-        // We may need to add a subscripton marker after merging the groups.
+        // We may need to add a subscription marker after merging the groups.
         this.maybe_add_subscription_marker(second_group, last_msg_container, first_msg_container);
 
         return false;
@@ -563,7 +557,6 @@ export class MessageListView {
             prepend_groups: [],
             rerender_groups: [],
             append_messages: [],
-            rerender_messages_next_same_sender: [],
         };
         let first_group;
         let second_group;
@@ -623,7 +616,6 @@ export class MessageListView {
         } else {
             if (was_joined) {
                 // rerender the last message
-                message_actions.rerender_messages_next_same_sender.push(prev_msg_container);
                 message_actions.append_messages = new_message_groups[0].message_containers;
                 new_message_groups = new_message_groups.slice(1);
             } else if (first_group !== undefined && second_group !== undefined) {
@@ -834,25 +826,6 @@ export class MessageListView {
                 this._post_process($dom_messages);
                 $old_message_group.replaceWith($rendered_groups);
                 condense.condense_and_collapse($dom_messages);
-            }
-        }
-
-        // Update the rendering for message rows which used to be last
-        // and now know whether the following message has the same
-        // sender.
-        //
-        // It is likely the case that we can just remove the block
-        // entirely, since it appears the next_is_same_sender CSS
-        // class doesn't do anything.
-        if (message_actions.rerender_messages_next_same_sender.length > 0) {
-            const targets = message_actions.rerender_messages_next_same_sender;
-
-            for (const message_container of targets) {
-                const $row = this.get_row(message_container.msg.id);
-                $row.find("div.messagebox").toggleClass(
-                    "next_is_same_sender",
-                    message_container.next_is_same_sender,
-                );
             }
         }
 

@@ -54,9 +54,9 @@ module = [
     "aioapns.*", # https://github.com/Fatal1ty/aioapns/issues/33
     "bitfield.*",
     "bmemcached.*",
-    "cairosvg.*",
+    "cairosvg.*", # https://github.com/Kozea/CairoSVG/issues/373
     "circuitbreaker.*",
-    "coverage.*",
+    "coverage.*", # https://github.com/nedbat/coveragepy/issues/1434
     "cssutils.*",
     "defusedxml.*", # https://github.com/tiran/defusedxml/issues/46
     "digitalocean.*",
@@ -66,14 +66,13 @@ module = [
     "django_cte.*",
     "django_otp.*",
     "django_scim.*",
-    "django_sendfile.*",
     "django_statsd.*",
     "DNS.*",
     "fakeldap.*",
     "gcm.*",
     "gitlint.*",
     "jsonref.*",
-    "ldap.*",
+    "ldap.*", # https://github.com/python-ldap/python-ldap/issues/368
     "moto.*", # https://github.com/spulec/moto/issues/4944
     "onelogin.*",
     "premailer.*",
@@ -103,15 +102,22 @@ select = [
     "ANN", # annotations
     "B", # bugbear
     "C4", # comprehensions
+    "DTZ", # naive datetime
     "E", # style errors
     "F", # flakes
     "I", # import sorting
+    "ISC", # string concatenation
     "N", # naming
     "PGH", # pygrep-hooks
+    "PIE", # miscellaneous
     "PLC", # pylint convention
     "PLE", # pylint error
     "PLR", # pylint refactor
+    "PLW", # pylint warning
+    "Q", # quotes
     "RUF", # Ruff
+    "S", # security
+    "SIM", # simplify
     "T10", # debugger
     "UP", # upgrade
     "W", # style warnings
@@ -132,7 +138,12 @@ ignore = [
     "N802", # Function name should be lowercase
     "N806", # Variable in function should be lowercase
     "RUF001", # String contains ambiguous unicode character
+    "RUF002", # Docstring contains ambiguous unicode character
     "RUF003", # Comment contains ambiguous unicode character
+    "S101", # Use of `assert` detected
+    "S105", # Possible hardcoded password
+    "S106", # Possible hardcoded password
+    "S107", # Possible hardcoded password
 ]
 line-length = 100
 src = [".", "tools"]

@@ -50,7 +50,6 @@ h3,
     }
 }
 
-.email-change-form,
 .user-name-section {
     .settings-info-icon {
         position: relative;
@@ -161,14 +160,38 @@ h3,
     }
 }
 
+#change_email_button_container {
+    &.email_changes_disabled_tooltip {
+        cursor: not-allowed;
+    }
+}
+
+#change_email_button {
+    &:disabled {
+        pointer-events: none;
+    }
+}
+
 #change_password_modal,
 #change_email_modal {
     max-width: 480px;
 }
 
 #change_email_modal {
-    #change_email_container {
+    #change_email_form {
         margin: 0;
+    }
+}
+
+#deactivate_account_container {
+    &.only_organization_owner_tooltip {
+        cursor: not-allowed;
+    }
+}
+
+#user_deactivate_account_button {
+    &:disabled {
+        pointer-events: none;
     }
 }
 

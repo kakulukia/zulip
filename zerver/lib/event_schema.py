@@ -287,7 +287,7 @@ heartbeat_event = event_dict_type(
         ("type", Equals("heartbeat")),
     ]
 )
-_check_hearbeat = make_checker(heartbeat_event)
+_check_heartbeat = make_checker(heartbeat_event)
 
 
 def check_heartbeat(
@@ -295,7 +295,7 @@ def check_heartbeat(
     var_name: str,
     event: Dict[str, object],
 ) -> None:
-    _check_hearbeat(var_name, event)
+    _check_heartbeat(var_name, event)
 
 
 _hotspot = DictType(
@@ -894,7 +894,7 @@ def check_realm_update(
 
     if prop == "plan_type":
         assert isinstance(value, int)
-        assert "extra_data" in event.keys()
+        assert "extra_data" in event
         return
 
     assert "extra_data" not in event.keys()
@@ -1495,7 +1495,7 @@ def check_update_display_settings(
         assert isinstance(setting, setting_type)
 
     if setting_name == "default_language":
-        assert "language_name" in event.keys()
+        assert "language_name" in event
     else:
         assert "language_name" not in event.keys()
 
@@ -1516,7 +1516,7 @@ def check_user_settings_update(
         assert isinstance(value, setting_type)
 
     if setting_name == "default_language":
-        assert "language_name" in event.keys()
+        assert "language_name" in event
     else:
         assert "language_name" not in event.keys()
 

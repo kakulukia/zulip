@@ -2237,7 +2237,6 @@ class SAMLDocument:
         """
         Returns a list of the issuers of the SAML document.
         """
-        pass
 
 
 class SAMLRequest(SAMLDocument):
@@ -2300,9 +2299,9 @@ class SAMLAuthBackend(SocialAuthMixin, SAMLAuth):
             ]
             if idps_without_limit_to_subdomains:
                 self.logger.error(
-                    "SAML_REQUIRE_LIMIT_TO_SUBDOMAINS is enabled and the following "
-                    + "IdPs don't have limit_to_subdomains specified and will be ignored: "
-                    + f"{idps_without_limit_to_subdomains}"
+                    "SAML_REQUIRE_LIMIT_TO_SUBDOMAINS is enabled and the following IdPs don't have"
+                    " limit_to_subdomains specified and will be ignored:"
+                    f" {idps_without_limit_to_subdomains}"
                 )
                 for idp_name in idps_without_limit_to_subdomains:
                     del settings.SOCIAL_AUTH_SAML_ENABLED_IDPS[idp_name]
@@ -2438,8 +2437,8 @@ class SAMLAuthBackend(SocialAuthMixin, SAMLAuth):
             return
 
         error_msg = (
-            f"SAML user from IdP {idp.name} rejected due to missing entitlement "
-            + f"for subdomain '{subdomain}'. User entitlements: {entitlements}."
+            f"SAML user from IdP {idp.name} rejected due to missing entitlement for subdomain"
+            f" '{subdomain}'. User entitlements: {entitlements}."
         )
         raise AuthFailed(self, error_msg)
 
@@ -2546,7 +2545,7 @@ class SAMLAuthBackend(SocialAuthMixin, SAMLAuth):
         subdomain = self.choose_subdomain(relayed_params)
         if subdomain is None:
             error_msg = (
-                "/complete/saml/: Can't figure out subdomain for this %s. " + "relayed_params: %s"
+                "/complete/saml/: Can't figure out subdomain for this %s. relayed_params: %s"
             )
             self.logger.info(error_msg, saml_document.document_type(), relayed_params)
             return None
@@ -2561,8 +2560,8 @@ class SAMLAuthBackend(SocialAuthMixin, SAMLAuth):
         idp_valid = self.validate_idp_for_subdomain(idp_name, subdomain)
         if not idp_valid:
             error_msg = (
-                "/complete/saml/: Authentication request with IdP %s but this provider is not "
-                + "enabled for this subdomain %s."
+                "/complete/saml/: Authentication request with IdP %s but this provider is not"
+                " enabled for this subdomain %s."
             )
             self.logger.info(error_msg, idp_name, subdomain)
             return None

@@ -43,7 +43,7 @@ from zerver.lib.test_classes import ZulipTestCase
 from zerver.lib.test_helpers import HostRequestMock, get_user_messages, queries_captured
 from zerver.lib.topic import MATCH_TOPIC, RESOLVED_TOPIC_PREFIX, TOPIC_NAME
 from zerver.lib.types import DisplayRecipientT
-from zerver.lib.upload import create_attachment
+from zerver.lib.upload.base import create_attachment
 from zerver.lib.url_encoding import near_message_url
 from zerver.lib.user_topics import set_topic_mutes
 from zerver.models import (
@@ -2178,8 +2178,10 @@ class GetOldMessagesTest(ZulipTestCase):
         self.assertEqual(meeting_message[MATCH_TOPIC], "meetings")
         self.assertEqual(
             meeting_message["match_content"],
-            '<p>discuss <span class="highlight">lunch</span> after '
-            + '<span class="highlight">lunch</span></p>',
+            (
+                '<p>discuss <span class="highlight">lunch</span> after <span'
+                ' class="highlight">lunch</span></p>'
+            ),
         )
 
         (lunch_message,) = (m for m in messages if m[TOPIC_NAME] == "lunch plans")
@@ -2224,7 +2226,7 @@ class GetOldMessagesTest(ZulipTestCase):
         self.assertEqual(japanese_message[MATCH_TOPIC], '<span class="highlight">日本</span>')
         self.assertEqual(
             japanese_message["match_content"],
-            '<p>昨日、<span class="highlight">日本</span>' + " のお菓子を送りました。</p>",
+            '<p>昨日、<span class="highlight">日本</span> のお菓子を送りました。</p>',
         )
 
         (english_message,) = (m for m in messages if m[TOPIC_NAME] == "english")
@@ -2372,7 +2374,7 @@ class GetOldMessagesTest(ZulipTestCase):
         self.assertEqual(japanese_message[MATCH_TOPIC], '<span class="highlight">日本</span>語')
         self.assertEqual(
             japanese_message["match_content"],
-            '<p>昨日、<span class="highlight">日本</span>の' + "お菓子を送りました。</p>",
+            '<p>昨日、<span class="highlight">日本</span>のお菓子を送りました。</p>',
         )
 
         english_message = [m for m in messages if m[TOPIC_NAME] == "english"][0]
