@@ -92,9 +92,9 @@ def send_initial_pms(user: UserProfile) -> None:
         getting_started_url="/help/getting-started-with-zulip",
     )
 
-    internal_send_private_message(
-        get_system_bot(settings.WELCOME_BOT, user.realm_id), user, content
-    )
+    # internal_send_private_message(
+    #     get_system_bot(settings.WELCOME_BOT, user.realm_id), user, content
+    # )
 
 
 def bot_commands(no_help_command: bool = False) -> str:
