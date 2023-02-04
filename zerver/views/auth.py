@@ -26,9 +26,6 @@ from django.utils.translation import gettext as _
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_safe
 from markupsafe import Markup
-from social_django.utils import load_backend, load_strategy
-from two_factor.forms import BackupTokenForm
-from two_factor.views import LoginView as BaseTwoFactorLoginView
 from typing_extensions import Concatenate, ParamSpec
 
 from confirmation.models import (
@@ -43,7 +40,6 @@ from zerver.context_processors import get_realm_from_request, login_context, zul
 from zerver.decorator import do_login, log_view_func, process_client, require_post
 from zerver.forms import (
     DEACTIVATED_ACCOUNT_ERROR,
-    AuthenticationTokenForm,
     HomepageForm,
     OurAuthenticationForm,
     ZulipPasswordResetForm,
@@ -723,52 +719,6 @@ def update_login_page_context(request: HttpRequest, context: Dict[str, Any]) -> 
         )
     except ValidationError:
         logging.info("Invalid email in is_deactivated param to login page: %s", deactivated_email)
-
-
-class TwoFactorLoginView(BaseTwoFactorLoginView):
-    extra_context: ExtraContext = None
-    form_list = (
-        ("auth", OurAuthenticationForm),
-        ("token", AuthenticationTokenForm),
-        ("backup", BackupTokenForm),
-    )
-
-    def __init__(self, extra_context: ExtraContext = None, *args: Any, **kwargs: Any) -> None:
-        self.extra_context = extra_context
-        super().__init__(*args, **kwargs)
-
-    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
-        context = super().get_context_data(**kwargs)
-        if self.extra_context is not None:
-            context.update(self.extra_context)
-        update_login_page_context(self.request, context)
-
-        realm = get_realm_from_request(self.request)
-        redirect_to = realm.uri if realm else "/"
-        context["next"] = self.request.POST.get(
-            "next",
-            self.request.GET.get("next", redirect_to),
-        )
-        return context
-
-    def done(self, form_list: List[Form], **kwargs: Any) -> HttpResponse:
-        """
-        Log in the user and redirect to the desired page.
-
-        We need to override this function so that we can redirect to
-        realm.uri instead of '/'.
-        """
-        realm_uri = self.get_user().realm.uri
-        # This mock.patch business is an unpleasant hack that we'd
-        # ideally like to remove by instead patching the upstream
-        # module to support better configurability of the
-        # LOGIN_REDIRECT_URL setting.  But until then, it works.  We
-        # import mock.patch here because mock has an expensive import
-        # process involving pbr -> pkgresources (which is really slow).
-        from unittest.mock import patch
-
-        with patch.object(settings, "LOGIN_REDIRECT_URL", realm_uri):
-            return super().done(form_list, **kwargs)
 
 
 @has_request_variables

@@ -1,0 +1,10 @@
+<b style="color: red">
+    {% if debug %}
+        SSO token obtain error: {{ error }}
+    {% else %}
+        Internal authorization error
+    {% endif %}
+</b>
+<p style="color: gray">
+    This message shows because Django in DEBUG mode. Make DEBUG=False to disable it
+</p>

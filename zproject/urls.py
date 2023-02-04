@@ -218,10 +218,6 @@ from zerver.views.zephyr import webathena_kerberos_login
 from zproject import dev_urls
 from zproject.legacy_urls import legacy_urls
 
-if settings.TWO_FACTOR_AUTHENTICATION_ENABLED:
-    from two_factor.gateways.twilio.urls import urlpatterns as tf_twilio_urls
-    from two_factor.urls import urlpatterns as tf_urls
-
 # NB: There are several other pieces of code which route requests by URL:
 #
 #   - legacy_urls.py contains API endpoint written before the redesign

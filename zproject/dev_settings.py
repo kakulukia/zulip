@@ -80,7 +80,7 @@ INVITES_MIN_USER_AGE_DAYS = 0
 
 # Redirect to /devlogin/ by default in dev mode
 CUSTOM_HOME_NOT_LOGGED_IN = "/devlogin/"
-LOGIN_URL = "/devlogin/"
+LOGIN_URL = "/login/"
 
 # For development convenience, configure the ToS/Privacy Policies
 POLICIES_DIRECTORY = "corporate/policies"
@@ -97,10 +97,6 @@ POST_MIGRATION_CACHE_FLUSHING = True
 # Don't require anything about password strength in development
 PASSWORD_MIN_LENGTH = 0
 PASSWORD_MIN_GUESSES = 0
-
-# Two factor authentication: Use the fake backend for development.
-TWO_FACTOR_CALL_GATEWAY = "two_factor.gateways.fake.Fake"
-TWO_FACTOR_SMS_GATEWAY = "two_factor.gateways.fake.Fake"
 
 # Set this True to send all hotspots in development
 ALWAYS_SEND_ALL_HOTSPOTS = False

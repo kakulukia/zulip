@@ -208,8 +208,6 @@ INSTALLED_APPS = [
     "django_otp",
     "django_otp.plugins.otp_static",
     "django_otp.plugins.otp_totp",
-    "two_factor",
-    "two_factor.plugins.phonenumber",
     "django_sso.sso_service",
 ]
 if USING_PGROONGA:
@@ -621,7 +619,7 @@ non_html_template_engine_settings = deepcopy(base_template_engine_settings)
 non_html_template_engine_settings.update(
     NAME="Jinja2_plaintext",
     DIRS=[os.path.join(DEPLOY_ROOT, "templates")],
-    APP_DIRS=False,
+    APP_DIRS=True,
 )
 non_html_template_engine_settings["OPTIONS"].update(
     autoescape=False,
@@ -629,27 +627,11 @@ non_html_template_engine_settings["OPTIONS"].update(
     lstrip_blocks=True,
 )
 
-# django-two-factor uses the default Django template engine (not Jinja2), so we
-# need to add config for it here.
-two_factor_template_options = deepcopy(default_template_engine_settings["OPTIONS"])
-del two_factor_template_options["environment"]
-del two_factor_template_options["extensions"]
-two_factor_template_options["loaders"] = ["zproject.template_loaders.TwoFactorLoader"]
-
-two_factor_template_engine_settings = {
-    "NAME": "Two_Factor",
-    "BACKEND": "django.template.backends.django.DjangoTemplates",
-    "DIRS": [],
-    "APP_DIRS": False,
-    "OPTIONS": two_factor_template_options,
-}
-
 # The order here is important; get_template and related/parent functions try
 # the template engines in order until one succeeds.
 TEMPLATES = [
     default_template_engine_settings,
     non_html_template_engine_settings,
-    two_factor_template_engine_settings,
 ]
 ########################################################################
 # LOGGING SETTINGS
@@ -1225,7 +1207,7 @@ SCIM_SERVICE_PROVIDER = {
 LOGIN_URL = '/'
 
 # Specify SSO server base url
-SSO_ROOT = 'http://localhost:8000/'
+SSO_ROOT = 'https://test-anna.libendgern.de/'
 
 # Specify application token obtained in SSO server in the admin panel
 SSO_TOKEN = '957irlLr1aW002JCjHTA7gVocuFYxM0YmKATtlqXNiszbSkWX2yKq8Gc0vJdBQCX3uMOTyG5dTv6N9VNBfLxqRoipQH7rcBJSFhICmLDiY8hckoftlkRKTuKkuLiRl6I'

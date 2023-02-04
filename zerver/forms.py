@@ -18,8 +18,6 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.translation import get_language, gettext_lazy
 from django.utils.translation import gettext as _
 from markupsafe import Markup
-from two_factor.forms import AuthenticationTokenForm as TwoFactorAuthenticationTokenForm
-from two_factor.utils import totp_digits
 
 from zerver.actions.user_settings import do_change_password
 from zerver.lib.email_validation import (
@@ -502,18 +500,6 @@ class OurAuthenticationForm(AuthenticationForm):
         happy with this form.
         """
         return field_name
-
-
-class AuthenticationTokenForm(TwoFactorAuthenticationTokenForm):
-    """
-    We add this form to update the widget of otp_token. The default
-    widget is an input element whose type is a number, which doesn't
-    stylistically match our theme.
-    """
-
-    otp_token = forms.IntegerField(
-        label=_("Token"), min_value=1, max_value=int("9" * totp_digits()), widget=forms.TextInput
-    )
 
 
 class MultiEmailField(forms.Field):

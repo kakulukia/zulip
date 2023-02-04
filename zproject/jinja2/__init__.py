@@ -7,7 +7,6 @@ from django.urls import reverse
 from django.utils import translation
 from django.utils.timesince import timesince
 from jinja2 import Environment
-from two_factor.plugins.phonenumber.templatetags.phonenumber import device_action
 
 from zerver.context_processors import DEFAULT_PAGE_PARAMS
 from zerver.lib.templates import display_list, render_markdown_path, webpack_entry
@@ -35,7 +34,6 @@ def environment(**options: Any) -> Environment:
     env.filters["slugify"] = slugify
     env.filters["pluralize"] = pluralize
     env.filters["display_list"] = display_list
-    env.filters["device_action"] = device_action
     env.filters["timesince"] = timesince
 
     env.policies["json.dumps_function"] = json_dumps

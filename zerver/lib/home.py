@@ -6,7 +6,6 @@ from typing import Dict, List, Optional, Tuple
 from django.conf import settings
 from django.http import HttpRequest
 from django.utils import translation
-from two_factor.utils import default_device
 
 from zerver.context_processors import get_apps_page_url
 from zerver.lib.events import do_events_register
