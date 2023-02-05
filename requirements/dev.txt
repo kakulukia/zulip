@@ -89,7 +89,7 @@ backports-cached-property==1.0.2 \
     --hash=sha256:9306f9eed6ec55fd156ace6bc1094e2c86fae5fb2bf07b6a9c00745c656e75dd \
     --hash=sha256:baeb28e1cd619a3c9ab8941431fe34e8490861fb998c6c4590693d50171db0cc
     # via openapi-core
-backports.zoneinfo==0.2.1 ; python_version < "3.9" \
+backports-zoneinfo==0.2.1 ; python_version < "3.9" \
     --hash=sha256:17746bd546106fa389c51dbea67c8b7c8f0d14b5526a579ca6ccf5ed72c526cf \
     --hash=sha256:1b13e654a55cd45672cb54ed12148cd33628f672548f373963b0bff67b217328 \
     --hash=sha256:1c5742112073a563c81f786e77514969acb58649bcdf6cdf0b4ed31a348d4546 \
@@ -1867,7 +1867,7 @@ requests-oauthlib==1.3.1 \
     #   -r requirements/common.in
     #   python-twitter
     #   social-auth-core
-https://github.com/getsentry/responses/archive/b30c13fe1c9a2e60e7e2de7a92322b4d4ad57562.zip#egg=responses==0.22.0+git \
+responses @ https://github.com/getsentry/responses/archive/b30c13fe1c9a2e60e7e2de7a92322b4d4ad57562.zip \
     --hash=sha256:dcf59bab75623a68ed2349cb203b5be9be8870732b02aafeee2f7e6045f8b9d0
     # via
     #   -r requirements/dev.in
@@ -1876,11 +1876,11 @@ rsa==4.9 \
     --hash=sha256:90260d9058e514786967344d0ef75fa8727eed8a7d2e43ce9f4bcf1b536174f7 \
     --hash=sha256:e38464a49c6c85d7f1351b0126661487a7e0a14a50f1675ec50eb34d4f20ef21
     # via python-jose
-ruamel.yaml==0.17.21 \
+ruamel-yaml==0.17.21 \
     --hash=sha256:742b35d3d665023981bd6d16b3d24248ce5df75fdb4e2924e93a05c1f8b61ca7 \
     --hash=sha256:8b7ce697a2f212752a35c1ac414471dc16c424c9573be4926b56ff3f5d23b7af
     # via semgrep
-ruamel.yaml.clib==0.2.7 \
+ruamel-yaml-clib==0.2.7 \
     --hash=sha256:045e0626baf1c52e5527bd5db361bc83180faaba2ff586e763d3d5982a876a9e \
     --hash=sha256:15910ef4f3e537eea7fe45f8a5d19997479940d9196f357152a09031c5be59f3 \
     --hash=sha256:184faeaec61dbaa3cace407cffc5819f7b977e75360e8d5ca19461cd851a5fc5 \
@@ -1915,7 +1915,7 @@ ruamel.yaml.clib==0.2.7 \
     --hash=sha256:efa08d63ef03d079dcae1dfe334f6c8847ba8b645d08df286358b1f5293d24ab \
     --hash=sha256:f01da5790e95815eb5a8a138508c01c758e5f5bc0ce4286c4f7028b8dd7ac3d0 \
     --hash=sha256:f34019dced51047d6f70cb9383b2ae2853b7fc4dce65129a5acd49f4f9256646
-    # via ruamel.yaml
+    # via ruamel-yaml
 ruff==0.0.208 \
     --hash=sha256:1c1e4338dc625ba90611cf2a9006259d0fc0e384d4ea69e7dcc430674d737d3a \
     --hash=sha256:265bb9f56e470be17e0fb420b35dd9979f027da4d0e4cf333e2f8f277707fd18 \
@@ -2118,7 +2118,7 @@ tabulate==0.9.0 \
     --hash=sha256:0095b12bf5966de529c0feb1fa08671671b3368eec77d7ef7ab114be2c068b3c \
     --hash=sha256:024ca478df22e9340661486f85298cff5f6dcdba14f3813e8830015b9ed1948f
     # via pyre-check
-https://github.com/zulip/talon/archive/137ea31ca506069f9a8bbddde0d0174f395a6893.zip#egg=talon-core==1.6.0.zulip1&subdirectory=talon-core \
+talon-core @ https://github.com/zulip/talon/archive/137ea31ca506069f9a8bbddde0d0174f395a6893.zip#subdirectory=talon-core \
     --hash=sha256:4314d10c98764b6cb3147cec1c56eb2d56d27ad0d4a8562074a868cc0bcb6996
     # via -r requirements/common.in
 tblib==1.7.0 \
@@ -2476,7 +2476,7 @@ zipp==3.11.0 \
     # via
     #   importlib-metadata
     #   importlib-resources
-zope.interface==5.5.2 \
+zope-interface==5.5.2 \
     --hash=sha256:008b0b65c05993bb08912f644d140530e775cf1c62a072bf9340c2249e613c32 \
     --hash=sha256:0217a9615531c83aeedb12e126611b1b1a3175013bbafe57c702ce40000eb9a0 \
     --hash=sha256:0fb497c6b088818e3395e302e426850f8236d8d9f4ef5b2836feae812a8f699c \
@@ -2516,15 +2516,15 @@ zope.interface==5.5.2 \
     # via
     #   scrapy
     #   twisted
-https://github.com/zulip/zulint/archive/80aba3fd88faf6598665ac670a1d30f3c028df0d.zip#egg=zulint==1.0.0+git \
+zulint @ https://github.com/zulip/zulint/archive/80aba3fd88faf6598665ac670a1d30f3c028df0d.zip \
     --hash=sha256:e9e4656d81900a6af64a69ff1918e61f5fe0f5daca0c73d8288d912c99428c79
     # via -r requirements/dev.in
-https://github.com/zulip/python-zulip-api/archive/0.8.2.zip#egg=zulip==0.8.2+git&subdirectory=zulip \
+zulip @ https://github.com/zulip/python-zulip-api/archive/0.8.2.zip#subdirectory=zulip \
     --hash=sha256:c85a2c76b265ef66478715bb2a38723c4942f84b2f876c3e0ba916962e3d0735
     # via
     #   -r requirements/common.in
     #   zulip-bots
-https://github.com/zulip/python-zulip-api/archive/0.8.2.zip#egg=zulip_bots==0.8.2+git&subdirectory=zulip_bots \
+zulip_bots @ https://github.com/zulip/python-zulip-api/archive/0.8.2.zip#subdirectory=zulip_bots \
     --hash=sha256:c85a2c76b265ef66478715bb2a38723c4942f84b2f876c3e0ba916962e3d0735
     # via -r requirements/common.in
 zxcvbn==4.4.28 \
@@ -2532,9 +2532,9 @@ zxcvbn==4.4.28 \
     # via -r requirements/common.in
 
 # The following packages are considered to be unsafe in a requirements file:
-pip==20.3.4 \
-    --hash=sha256:217ae5161a0e08c0fb873858806e3478c9775caffce5168b50ec885e358c199d \
-    --hash=sha256:6773934e5f5fc3eaa8c5a44949b5b924fc122daa0a8aa9f80c835b4ca2a543fc
+pip==22.0.4 \
+    --hash=sha256:b3a9de2c6ef801e9247d1527a4b16f92f2cc141cd1489f3fffaf6a9e96729764 \
+    --hash=sha256:c6aca0f2f081363f689f041d90dab2a07a9a07fb840284db2218117a52da800b
     # via
     #   -r requirements/pip.in
     #   pip-tools
@@ -2546,4 +2546,4 @@ setuptools==65.6.3 \
     #   -r requirements/pip.in
     #   pip-tools
     #   scrapy
-    #   zope.interface
+    #   zope-interface

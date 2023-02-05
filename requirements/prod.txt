@@ -68,7 +68,7 @@ backports-cached-property==1.0.2 \
     --hash=sha256:9306f9eed6ec55fd156ace6bc1094e2c86fae5fb2bf07b6a9c00745c656e75dd \
     --hash=sha256:baeb28e1cd619a3c9ab8941431fe34e8490861fb998c6c4590693d50171db0cc
     # via openapi-core
-backports.zoneinfo==0.2.1 ; python_version < "3.9" \
+backports-zoneinfo==0.2.1 ; python_version < "3.9" \
     --hash=sha256:17746bd546106fa389c51dbea67c8b7c8f0d14b5526a579ca6ccf5ed72c526cf \
     --hash=sha256:1b13e654a55cd45672cb54ed12148cd33628f672548f373963b0bff67b217328 \
     --hash=sha256:1c5742112073a563c81f786e77514969acb58649bcdf6cdf0b4ed31a348d4546 \
@@ -1457,7 +1457,7 @@ stripe==5.0.0 \
     --hash=sha256:50f69a5fc9cd6f7629861b80ea70a3c6da0c76401ddc159474f2d45fab9215d6 \
     --hash=sha256:bdc8c5ee8e6b53c4767bbe720752cedb8af91db46ad96e511edd0fb74964ac5d
     # via -r requirements/common.in
-https://github.com/zulip/talon/archive/137ea31ca506069f9a8bbddde0d0174f395a6893.zip#egg=talon-core==1.6.0.zulip1&subdirectory=talon-core \
+talon-core @ https://github.com/zulip/talon/archive/137ea31ca506069f9a8bbddde0d0174f395a6893.zip#subdirectory=talon-core \
     --hash=sha256:4314d10c98764b6cb3147cec1c56eb2d56d27ad0d4a8562074a868cc0bcb6996
     # via -r requirements/common.in
 tlds==2022070701 \
@@ -1553,12 +1553,12 @@ zipp==3.11.0 \
     # via
     #   importlib-metadata
     #   importlib-resources
-https://github.com/zulip/python-zulip-api/archive/0.8.2.zip#egg=zulip==0.8.2+git&subdirectory=zulip \
+zulip @ https://github.com/zulip/python-zulip-api/archive/0.8.2.zip#subdirectory=zulip \
     --hash=sha256:c85a2c76b265ef66478715bb2a38723c4942f84b2f876c3e0ba916962e3d0735
     # via
     #   -r requirements/common.in
     #   zulip-bots
-https://github.com/zulip/python-zulip-api/archive/0.8.2.zip#egg=zulip_bots==0.8.2+git&subdirectory=zulip_bots \
+zulip_bots @ https://github.com/zulip/python-zulip-api/archive/0.8.2.zip#subdirectory=zulip_bots \
     --hash=sha256:c85a2c76b265ef66478715bb2a38723c4942f84b2f876c3e0ba916962e3d0735
     # via -r requirements/common.in
 zxcvbn==4.4.28 \
@@ -1566,7 +1566,7 @@ zxcvbn==4.4.28 \
     # via -r requirements/common.in
 
 # The following packages are considered to be unsafe in a requirements file:
-pip==20.3.4 \
-    --hash=sha256:217ae5161a0e08c0fb873858806e3478c9775caffce5168b50ec885e358c199d \
-    --hash=sha256:6773934e5f5fc3eaa8c5a44949b5b924fc122daa0a8aa9f80c835b4ca2a543fc
+pip==22.0.4 \
+    --hash=sha256:b3a9de2c6ef801e9247d1527a4b16f92f2cc141cd1489f3fffaf6a9e96729764 \
+    --hash=sha256:c6aca0f2f081363f689f041d90dab2a07a9a07fb840284db2218117a52da800b
     # via zulip-bots
