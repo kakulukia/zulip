@@ -208,6 +208,8 @@ INSTALLED_APPS = [
     "django_otp",
     "django_otp.plugins.otp_static",
     "django_otp.plugins.otp_totp",
+    "two_factor",
+    "two_factor.plugins.phonenumber",
     "django_sso.sso_service",
 ]
 if USING_PGROONGA:
