@@ -1209,7 +1209,7 @@ SCIM_SERVICE_PROVIDER = {
 LOGIN_URL = '/'
 
 # Specify SSO server base url
-SSO_ROOT = 'https://test-anna.liebendgern.de/'
+SSO_ROOT = 'https://test-anna.liebendgern.de'
 
 # Specify application token obtained in SSO server in the admin panel
 SSO_TOKEN = '957irlLr1aW002JCjHTA7gVocuFYxM0YmKATtlqXNiszbSkWX2yKq8Gc0vJdBQCX3uMOTyG5dTv6N9VNBfLxqRoipQH7rcBJSFhICmLDiY8hckoftlkRKTuKkuLiRl6I'
