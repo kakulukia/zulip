@@ -194,4 +194,4 @@ circuitbreaker
 django-stubs-ext
 
 # Zulip as SSO client
-django-sso
+django-sso==2.0.0

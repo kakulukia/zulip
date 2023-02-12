@@ -481,8 +481,8 @@ django-scim2==0.18.0 \
     --hash=sha256:5055099fdbfa55b46488cece7b378225263265ae4acd1669c47b2c286d2cfbb2 \
     --hash=sha256:f3353df68b469f494a5c7f53bb487411125a08be77d2ccc2d4c048138895614c
     # via -r requirements/common.in
-django-sso==1.1.4 \
-    --hash=sha256:3bac3ea3aade240320bd4659f359bdb00d3423689bfb7f59c90e2c7762024777
+django-sso==2.0.0 \
+    --hash=sha256:c9f0b3f80989a7a1299f08d37bfe4e3caace915fcb550b007204cfd65605a9a9
     # via -r requirements/common.in
 django-statsd-mozilla==0.4.0 \
     --hash=sha256:0d87cb63de8107279cbb748caad9aa74c6a44e7e96ccc5dbf07b89f77285a4b8 \
