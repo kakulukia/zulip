@@ -447,7 +447,6 @@ django[argon2]==4.1.5 \
     #   django-otp
     #   django-phonenumber-field
     #   django-scim2
-    #   django-sso
     #   django-stubs
     #   django-stubs-ext
     #   django-two-factor-auth
@@ -480,10 +479,6 @@ django-phonenumber-field==6.4.0 \
 django-scim2==0.18.0 \
     --hash=sha256:5055099fdbfa55b46488cece7b378225263265ae4acd1669c47b2c286d2cfbb2 \
     --hash=sha256:f3353df68b469f494a5c7f53bb487411125a08be77d2ccc2d4c048138895614c
-    # via -r requirements/common.in
-# WARNING: pip install will require the following package to be hashed.
-# Consider using a hashable URL like https://github.com/jazzband/pip-tools/archive/SOMECOMMIT.zip
-django-sso @ git+https://github.com/kakulukia/django-sso.git
     # via -r requirements/common.in
 django-statsd-mozilla==0.4.0 \
     --hash=sha256:0d87cb63de8107279cbb748caad9aa74c6a44e7e96ccc5dbf07b89f77285a4b8 \
@@ -1839,7 +1834,6 @@ requests[security]==2.28.1 \
     --hash=sha256:8fefa2a1a1365bf5520aac41836fbee479da67864514bdb821f31ce07ce65349
     # via
     #   -r requirements/common.in
-    #   django-sso
     #   matrix-client
     #   moto
     #   premailer
