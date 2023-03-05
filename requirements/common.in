@@ -194,4 +194,4 @@ circuitbreaker
 django-stubs-ext
 
 # Zulip as SSO client
-django-sso @ git+https://github.com/kakulukia/django-sso.git@7e5cb05c861650c74abe8faa5d6e7811bcea7e60
+django-sso @ git+https://github.com/kakulukia/django-sso.git
