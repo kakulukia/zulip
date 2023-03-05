@@ -192,6 +192,3 @@ circuitbreaker
 
 # Runtime monkeypatching of django-stubs generics
 django-stubs-ext
-
-# Zulip as SSO client
-django-sso @ git+https://github.com/kakulukia/django-sso.git
