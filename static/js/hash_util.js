@@ -305,8 +305,5 @@ export function current_hash_as_next() {
 
 export function build_login_link() {
     let login_link = "/login/?" + current_hash_as_next();
-    if (page_params.development_environment) {
-        login_link = "/devlogin/?" + current_hash_as_next();
-    }
     return login_link;
 }

@@ -56,13 +56,6 @@ urls = [
         serve,
         {"document_root": os.path.join(settings.DEPLOY_ROOT, "docs/_build/html")},
     ),
-    # The special no-password login endpoint for development
-    path(
-        "devlogin/",
-        login_page,
-        {"template_name": "zerver/development/dev_login.html"},
-        name="login_page",
-    ),
     # Page for testing email templates
     path("emails/", email_page),
     path("emails/generate/", generate_all_emails),

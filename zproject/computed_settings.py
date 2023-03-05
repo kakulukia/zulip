@@ -1017,7 +1017,7 @@ elif ONLY_SSO:
 else:
     HOME_NOT_LOGGED_IN = "/login/"
 
-AUTHENTICATION_BACKENDS += ("zproject.backends.ZulipDummyBackend",)
+# AUTHENTICATION_BACKENDS += ("zproject.backends.ZulipDummyBackend",)
 
 POPULATE_PROFILE_VIA_LDAP = bool(AUTH_LDAP_SERVER_URI)
 
@@ -1210,6 +1210,7 @@ LOGIN_URL = '/'
 
 # Specify SSO server base url
 SSO_ROOT = 'https://test-anna.liebendgern.de'
+# SSO_ROOT = 'http://192.168.188.107:8000'
 
 # Specify application token obtained in SSO server in the admin panel
 SSO_TOKEN = '957irlLr1aW002JCjHTA7gVocuFYxM0YmKATtlqXNiszbSkWX2yKq8Gc0vJdBQCX3uMOTyG5dTv6N9VNBfLxqRoipQH7rcBJSFhICmLDiY8hckoftlkRKTuKkuLiRl6I'

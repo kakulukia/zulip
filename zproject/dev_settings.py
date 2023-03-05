@@ -49,17 +49,17 @@ ALLOWED_HOSTS = ["*"]
 
 # Uncomment extra backends if you want to test with them.  Note that
 # for Google and GitHub auth you'll need to do some pre-setup.
-AUTHENTICATION_BACKENDS: Tuple[str, ...] = (
-    "zproject.backends.DevAuthBackend",
-    "zproject.backends.EmailAuthBackend",
-    "zproject.backends.GitHubAuthBackend",
-    "zproject.backends.GoogleAuthBackend",
-    "zproject.backends.SAMLAuthBackend",
-    # 'zproject.backends.AzureADAuthBackend',
-    "zproject.backends.GitLabAuthBackend",
-    "zproject.backends.AppleAuthBackend",
-    "zproject.backends.GenericOpenIdConnectBackend",
-)
+# AUTHENTICATION_BACKENDS: Tuple[str, ...] = (
+#     "zproject.backends.DevAuthBackend",
+#     "zproject.backends.EmailAuthBackend",
+#     "zproject.backends.GitHubAuthBackend",
+#     "zproject.backends.GoogleAuthBackend",
+#     "zproject.backends.SAMLAuthBackend",
+#     # 'zproject.backends.AzureADAuthBackend',
+#     "zproject.backends.GitLabAuthBackend",
+#     "zproject.backends.AppleAuthBackend",
+#     "zproject.backends.GenericOpenIdConnectBackend",
+# )
 
 EXTERNAL_URI_SCHEME = "http://"
 EMAIL_GATEWAY_PATTERN = "%s@" + EXTERNAL_HOST_WITHOUT_PORT
@@ -79,12 +79,12 @@ WEB_PUBLIC_STREAMS_ENABLED = True
 INVITES_MIN_USER_AGE_DAYS = 0
 
 # Redirect to /devlogin/ by default in dev mode
-CUSTOM_HOME_NOT_LOGGED_IN = "/devlogin/"
+CUSTOM_HOME_NOT_LOGGED_IN = "/login/"
 LOGIN_URL = "/login/"
 
 # For development convenience, configure the ToS/Privacy Policies
 POLICIES_DIRECTORY = "corporate/policies"
-TERMS_OF_SERVICE_VERSION = "1.0"
+TERMS_OF_SERVICE_VERSION = "0"
 TERMS_OF_SERVICE_MESSAGE: Optional[str] = "Description of changes to the ToS!"
 
 EMBEDDED_BOTS_ENABLED = True
