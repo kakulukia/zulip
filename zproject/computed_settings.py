@@ -1208,8 +1208,12 @@ SCIM_SERVICE_PROVIDER = {
 # Django variable. URL for unlogged users. We redirect it to our view.
 LOGIN_URL = '/'
 
-# Specify SSO server base url
-SSO_ROOT = 'https://test-anna.liebendgern.de'
-# SSO_ROOT = 'http://192.168.188.107:8000'
-SSO_TOKEN = '957irlLr1aW002JCjHTA7gVocuFYxM0YmKATtlqXNiszbSkWX2yKq8Gc0vJdBQCX3uMOTyG5dTv6N9VNBfLxqRoipQH7rcBJSFhICmLDiY8hckoftlkRKTuKkuLiRl6I'
-SSO_EVENT_ACCEPTOR_CLASS = 'zproject.utils.LiebendgernEventAcceptor'
+SSO = {
+    # Specify SSO server base url (REQUIRED)
+    'ROOT': 'https://test-anna.liebendgern.de',
+    # 'ROOT': 'http://192.168.188.107:8000',
+    'TOKEN': '957irlLr1aW002JCjHTA7gVocuFYxM0YmKATtlqXNiszbSkWX2yKq8Gc0vJdBQCX3uMOTyG5dTv6N9VNBfLxqRoipQH7rcBJSFhICmLDiY8hckoftlkRKTuKkuLiRl6I',
+
+    # "Overriding event acceptor in subordinated service" partition
+    'EVENT_ACCEPTOR_CLASS': 'zproject.utils.LiebendgernEventAcceptor'
+}
