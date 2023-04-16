@@ -729,32 +729,32 @@ def send_messages_for_new_subscribers(
                 ),
             )
 
-    if not user_profile.realm.is_zephyr_mirror_realm and len(created_streams) > 0:
-        sender = get_system_bot(settings.NOTIFICATION_BOT, user_profile.realm_id)
-        for stream in created_streams:
-            with override_language(stream.realm.default_language):
-                if stream.description == "":
-                    stream_description = "*" + _("No description.") + "*"
-                else:
-                    stream_description = stream.description
-                notifications.append(
-                    internal_prep_stream_message(
-                        sender=sender,
-                        stream=stream,
-                        topic=str(Realm.STREAM_EVENTS_NOTIFICATION_TOPIC),
-                        content=_(
-                            "**{policy}** stream created by {user_name}. **Description:**"
-                        ).format(
-                            user_name=silent_mention_syntax_for_user(user_profile),
-                            policy=get_stream_permission_policy_name(
-                                invite_only=stream.invite_only,
-                                history_public_to_subscribers=stream.history_public_to_subscribers,
-                                is_web_public=stream.is_web_public,
-                            ),
-                        )
-                        + f"\n```` quote\n{stream_description}\n````",
-                    ),
-                )
+    # if not user_profile.realm.is_zephyr_mirror_realm and len(created_streams) > 0:
+    #     sender = get_system_bot(settings.NOTIFICATION_BOT, user_profile.realm_id)
+    #     for stream in created_streams:
+    #         with override_language(stream.realm.default_language):
+    #             if stream.description == "":
+    #                 stream_description = "*" + _("No description.") + "*"
+    #             else:
+    #                 stream_description = stream.description
+    #             notifications.append(
+    #                 internal_prep_stream_message(
+    #                     sender=sender,
+    #                     stream=stream,
+    #                     topic=str(Realm.STREAM_EVENTS_NOTIFICATION_TOPIC),
+    #                     content=_(
+    #                         "**{policy}** stream created by {user_name}. **Description:**"
+    #                     ).format(
+    #                         user_name=silent_mention_syntax_for_user(user_profile),
+    #                         policy=get_stream_permission_policy_name(
+    #                             invite_only=stream.invite_only,
+    #                             history_public_to_subscribers=stream.history_public_to_subscribers,
+    #                             is_web_public=stream.is_web_public,
+    #                         ),
+    #                     )
+    #                     + f"\n```` quote\n{stream_description}\n````",
+    #                 ),
+    #             )
 
     if len(notifications) > 0:
         do_send_messages(notifications, mark_as_read=[user_profile.id])
