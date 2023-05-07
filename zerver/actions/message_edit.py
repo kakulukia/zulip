@@ -207,18 +207,18 @@ def send_message_moved_breadcrumbs(
     old_topic_link = f"#**{old_stream.name}>{old_topic}**"
     new_topic_link = f"#**{new_stream.name}>{new_topic}**"
 
-    if new_thread_notification_string is not None:
-        with override_language(new_stream.realm.default_language):
-            internal_send_stream_message(
-                sender,
-                new_stream,
-                new_topic,
-                new_thread_notification_string.format(
-                    old_location=old_topic_link,
-                    user=user_mention,
-                    changed_messages_count=changed_messages_count,
-                ),
-            )
+    # if new_thread_notification_string is not None:
+    #     with override_language(new_stream.realm.default_language):
+    #         internal_send_stream_message(
+    #             sender,
+    #             new_stream,
+    #             new_topic,
+    #             new_thread_notification_string.format(
+    #                 old_location=old_topic_link,
+    #                 user=user_mention,
+    #                 changed_messages_count=changed_messages_count,
+    #             ),
+    #         )
 
     if old_thread_notification_string is not None:
         with override_language(old_stream.realm.default_language):

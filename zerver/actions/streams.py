@@ -832,9 +832,9 @@ def send_change_stream_permission_notification(
             old_policy=old_policy_name,
             new_policy=new_policy_name,
         )
-        internal_send_stream_message(
-            sender, stream, str(Realm.STREAM_EVENTS_NOTIFICATION_TOPIC), notification_string
-        )
+        # internal_send_stream_message(
+        #     sender, stream, str(Realm.STREAM_EVENTS_NOTIFICATION_TOPIC), notification_string
+        # )
 
 
 def do_change_stream_permission(
@@ -1018,9 +1018,9 @@ def send_change_stream_post_policy_notification(
             old_policy=Stream.POST_POLICIES[old_post_policy],
             new_policy=Stream.POST_POLICIES[new_post_policy],
         )
-        internal_send_stream_message(
-            sender, stream, str(Realm.STREAM_EVENTS_NOTIFICATION_TOPIC), notification_string
-        )
+        # internal_send_stream_message(
+        #     sender, stream, str(Realm.STREAM_EVENTS_NOTIFICATION_TOPIC), notification_string
+        # )
 
 
 def do_change_stream_post_policy(
@@ -1138,17 +1138,17 @@ def do_rename_stream(stream: Stream, new_name: str, user_profile: UserProfile) -
         )
         send_event(stream.realm, event, can_access_stream_user_ids(stream))
     sender = get_system_bot(settings.NOTIFICATION_BOT, stream.realm_id)
-    with override_language(stream.realm.default_language):
-        internal_send_stream_message(
-            sender,
-            stream,
-            str(Realm.STREAM_EVENTS_NOTIFICATION_TOPIC),
-            _("{user_name} renamed stream {old_stream_name} to {new_stream_name}.").format(
-                user_name=silent_mention_syntax_for_user(user_profile),
-                old_stream_name=f"**{old_name}**",
-                new_stream_name=f"**{new_name}**",
-            ),
-        )
+    # with override_language(stream.realm.default_language):
+    #     internal_send_stream_message(
+    #         sender,
+    #         stream,
+    #         str(Realm.STREAM_EVENTS_NOTIFICATION_TOPIC),
+    #         _("{user_name} renamed stream {old_stream_name} to {new_stream_name}.").format(
+    #             user_name=silent_mention_syntax_for_user(user_profile),
+    #             old_stream_name=f"**{old_name}**",
+    #             new_stream_name=f"**{new_name}**",
+    #         ),
+    #     )
     # Even though the token doesn't change, the web client needs to update the
     # email forwarding address to display the correctly-escaped new name.
     return {"email_address": new_email}
@@ -1178,9 +1178,9 @@ def send_change_stream_description_notification(
             + f"\n```` quote\n{new_description}\n````"
         )
 
-        internal_send_stream_message(
-            sender, stream, str(Realm.STREAM_EVENTS_NOTIFICATION_TOPIC), notification_string
-        )
+        # internal_send_stream_message(
+        #     sender, stream, str(Realm.STREAM_EVENTS_NOTIFICATION_TOPIC), notification_string
+        # )
 
 
 def do_change_stream_description(
@@ -1264,9 +1264,9 @@ def send_change_stream_message_retention_days_notification(
             new_retention_period=new_retention_period,
             summary_line=summary_line,
         )
-        internal_send_stream_message(
-            sender, stream, str(Realm.STREAM_EVENTS_NOTIFICATION_TOPIC), notification_string
-        )
+        # internal_send_stream_message(
+        #     sender, stream, str(Realm.STREAM_EVENTS_NOTIFICATION_TOPIC), notification_string
+        # )
 
 
 def do_change_stream_message_retention_days(

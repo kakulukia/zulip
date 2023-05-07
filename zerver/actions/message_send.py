@@ -1631,7 +1631,7 @@ def internal_send_stream_message(
 
     if message is None:
         return None
-    message_ids = do_send_messages([message])
+    message_ids = []  # do_send_messages([message]) we dont want any bot messages
     return message_ids[0]
 
 

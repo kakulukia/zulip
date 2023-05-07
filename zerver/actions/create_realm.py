@@ -252,12 +252,12 @@ def do_create_realm(
         signups_stream = get_signups_stream(admin_realm)
         topic = realm.display_subdomain
 
-        internal_send_stream_message(
-            sender,
-            signups_stream,
-            topic,
-            signup_message,
-        )
+        # internal_send_stream_message(
+        #     sender,
+        #     signups_stream,
+        #     topic,
+        #     signup_message,
+        # )
     except Stream.DoesNotExist:  # nocoverage
         # If the signups stream hasn't been created in the admin
         # realm, don't auto-create it to send to it; just do nothing.
