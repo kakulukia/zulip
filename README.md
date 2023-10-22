@@ -1,5 +1,24 @@
 # Zulip overview
 
+## Connect to the server
+ssh zulip@akademie.liebendgern.de
+
+## See the server log
+tail -f /var/log/zulip/django.log
+
+## Status checken
+supervisorctl status zulip-django
+
+## Dev Server direkt starten für Debug
+python3 /home/zulip/deployments/current/manage.py runserver 127.0.0.1:9800
+
+## Upgrade Zulip to a new release
+sudo /home/zulip/deployments/current/scripts/upgrade-zulip zulip-server-sso-beta3.tar.gz
+
+## DB shell starten
+~/deployments/current$ ./manage.py shell
+
+
 [Zulip](https://zulip.com) is an open-source team collaboration tool with unique
 [topic-based threading][why-zulip] that combines the best of email and chat to
 make remote work productive and delightful. Fortune 500 companies, [leading open
